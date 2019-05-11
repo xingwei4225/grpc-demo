@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package model;
+
+import "github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api/annotations.proto";
+
+service AccountService{
+    //根据标识获取账户详细信息
+    rpc GetAccountInfo(AccountId) returns (AccountInfo) {
+        option(google.api.http) = {
+            post:"/v1/example/echo"
+            body:"*"
+        };
+    }
+    //获取所有账户信息
+    rpc ListAccountInfos(ReqMsg)returns(stream AccountInfo){}
+    //批量添加账户
+    rpc AddAccountInfos(stream AccountInfo)returns(ResponseMsg){}
+}
+
+message AccountId{
+    uint32 id = 1;
+}
+
+message ResponseMsg{
+    uint32 code = 1;
+    string message = 2;
+}
+message ReqMsg{
+    string token = 1;
+}
+
+message AccountInfo{
+    uint32 id = 1;
+    string name = 2;
+    uint32  age = 3;
+    string address = 4;
+}
